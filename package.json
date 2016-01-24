@@ -1,0 +1,16 @@
+{
+  "name": "jquery-pure-dom-scripting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -c -w --reporter spec ./test/**/*.test.js"
+  },
+  "keywords": [],
+  "author": "Anar Azadaliyev <anar.azadaliyev@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
