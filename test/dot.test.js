@@ -2,7 +2,7 @@
 
 var assert = require('chai').assert
 
-var DOT = require('../src/find-property-exercise.js')
+var DOT = require('../src/dot.js')
 
 describe('DOT method', function () {
   function Person (name) {

@@ -10,7 +10,10 @@
   "author": "Anar Azadaliyev <anar.azadaliyev@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "benchmark": "^2.0.0",
     "chai": "^3.4.1",
+    "chai-shallow-deep-equal": "^1.3.0",
+    "lodash": "^4.0.0",
     "mocha": "^2.3.4"
   }
 }
