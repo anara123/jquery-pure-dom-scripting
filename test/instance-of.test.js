@@ -4,7 +4,7 @@ var assert = require('chai').assert
 
 var INSTANCEOF = require('../src/instance-of.js')
 
-describe.only('INSTANCEOF test', function () {
+describe('INSTANCEOF test', function () {
   function Person (name) {
     this.name = name
   }

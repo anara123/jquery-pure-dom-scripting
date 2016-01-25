@@ -3,9 +3,6 @@
 var assert = require('chai').assert
 require('chai').use(require('chai-shallow-deep-equal'))
 
-var Benchmark = require('benchmark')
-var suite = new Benchmark.Suite
-
 var _ = require('lodash')
 
 var NEW = require('../src/new.js').NEW
@@ -89,29 +86,4 @@ describe('OBJECT_CREATE test', function () {
       moo.name)
   })
 
-})
-
-describe('new vs Object.create benchmark', function () {
-  var suite = new Benchmark.Suite
-
-  // add tests
-  suite.add('new', {
-    'fn': function () {
-      _.times(100, function () {
-        console.log('1######')
-        new Animal('foo')
-      })
-    }
-  })
-    .add('Object.create', function () {
-      var b = Object.create(Animal)
-    })
-    .on('cycle', function (event) {
-      console.log('####', String(event.target))
-    })
-    .on('complete', function () {
-      console.log('Fastest is ' + this.filter('fastest').map('name'))
-    })
-    // run async
-    .run()
 })
