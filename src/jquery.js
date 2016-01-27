@@ -1,14 +1,33 @@
 'use strict'
 
 module.exports = (function () {
+  var _REGEX_ID_SELECTOR = '#'
+  var _REGEX_QUERY_SELECTOR = '.'
+
   var $ = function (selector) {
     if (!(this instanceof $)) {
       return new $(selector)
     }
 
-    var elements = document.querySelectorAll(selector)
-    var _this = this
+    var elements = []
+    if (typeof selector === 'string') {
+      var selectors = selector.split(',')
 
+      $.each(selectors, function (i, s) {
+        if (s.charAt(0) === _REGEX_ID_SELECTOR) {
+          elements.push(document.getElementById(s))
+        } else if (s.charAt(0) === _REGEX_QUERY_SELECTOR) {
+          Array.prototype.push.apply(elements, document.querySelectorAll(s))
+        } else {
+          Array.prototype.push.apply(elements, document.getElementsByClassName(s))
+        }
+      })
+
+    } else if ($.isArray(selector) || $.isArrayLike(elements)) {
+      elements = selector
+    }
+
+    var _this = this
     $.each(elements, function (i, element) {
       _this[i] = element
     })
@@ -71,6 +90,26 @@ module.exports = (function () {
       } else {
         return this[0] && getText(this[0])
       }
+    },
+
+    find: function (selectors) {
+      if (!$.isArray(selectors)) {
+        selectors = [selectors]
+      }
+
+      var collection = []
+      $.each(this, function (i, elem) {
+        $.each(selectors, function (j, selector) {
+          var result = elem.querySelectorAll(selector)
+          if (result && result.length > 0) {
+            $.each(result, function (k, foundElem) {
+              collection.push(foundElem)
+            })
+          }
+        })
+      })
+
+      return $(collection)
     }
   })
 

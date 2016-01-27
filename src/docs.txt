@@ -1,0 +1,68 @@
+DOM & JQuery methods learned
+
+document
+============
+- document.getElementById(id)
+- document.getElementsByName(name)
+- document.getElementsByTagName(tag)
+- document.getElementsByClassName(className)
+- document.querySelector(selector)
+- document.querySelectorAll(selector) 
+
+- document.body 				// returns the body element of the html
+
+node
+============
+- document.createElement(tag)
+- document.createTextNode(textContent)
+- node.clone() | node.clone(text)
+- node.appendChild(newNode)
+- node.insertBefore(new, sibling)
+- node.replaceChild(new, old)
+- old.parentNode.replaceChild(new, old)
+- node.removeChild(old)				// remove all event handler before
+
+
+DOM element 
+============
+- element.childNodes
+- element.firstChild
+- element.lastChild				
+- element.nextSibling			// return the next tag element in the parent
+- element.previousSibling		// return the previous tag element in the parent
+- element.parentNode			
+- element.children 				// return the childNodes without the textNodes
+- element.innerHTML
+- element.textContent
+- element.className
+
+
+Events
+============
+node.["on" + eventName] = fn  	// works on every browser
+node.addEventListener(eventName, fn)	// not works on IE
+
+function(e) {
+	e = e || event 							// in IE event is global object, in other browser event passed 
+	var target = e.target || e.srcElement;	// different browser reach the element differently
+
+	...
+}
+
+JQuery
+============
+- $(selector) / new $(selector) // (ctor)
+- each(arr, callback) 			// iterate over all the elements in the array
+- extend(src, dest) 			// extends the src object with the properties of the dest object
+- find(subSelector)				// finds and concat all the subelements into single jquery object
+- html(newHtml)					// sets or gets the html into the element innerHTML
+- isArrayLike(arr)				// return true if the <arr> is array like
+- isArray(arr) 					// return true if the <arr> is array
+- makeArray(arrayLike)			// creates an array from arrayLike data structure
+- proxy(obj, fn)				// act like bind. Binding the obj this to the method
+- text(textContent)				// gets or sets the <textContent> of the element and its subelements
+- val(newValue)					// gets or sets the <newValue> of input element
+
+
+
+
