@@ -71,9 +71,9 @@ describe('jquery#makeArray converts array-like to real array object', function (
 
   it('should return the object itself withot chaing it', function () {
     var obj = { koo: 'koo' }
-    assert.throws(function () {
-      $.makeArray(obj)
-    })
+    assert.deepEqual(
+      $.makeArray(obj),
+      [ obj ])
   })
 
   afterEach(function () {

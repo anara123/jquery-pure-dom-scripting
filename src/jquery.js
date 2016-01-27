@@ -15,7 +15,7 @@ module.exports = (function () {
 
       $.each(selectors, function (i, s) {
         if (s.charAt(0) === _REGEX_ID_SELECTOR) {
-          elements.push(document.getElementById(s))
+          elements.push(document.getElementById(s.substring(1)))
         } else if (s.charAt(0) === _REGEX_QUERY_SELECTOR) {
           Array.prototype.push.apply(elements, document.querySelectorAll(s))
         } else {
@@ -25,6 +25,8 @@ module.exports = (function () {
 
     } else if ($.isArray(selector) || $.isArrayLike(elements)) {
       elements = selector
+    } else {
+      elements = $.makeArray(selector)
     }
 
     var _this = this
@@ -33,19 +35,6 @@ module.exports = (function () {
     })
 
     this.length = elements.length
-  }
-
-  function getText (elem) {
-    if (elem.nodeType === Node.ELEMENT_NODE) {
-      var txt = []
-      $.each(elem.childNodes, function (i, subElement) {
-        txt.push(getText(subElement))
-      })
-      return txt.join('')
-
-    } else if (elem.nodeType === Node.TEXT_NODE) {
-      return elem.textContent
-    }
   }
 
   $.extend = function (src, dest) {
@@ -110,7 +99,29 @@ module.exports = (function () {
       })
 
       return $(collection)
-    }
+    },
+
+    next: function () {
+      var elements = []
+
+      $.each(this, function (i, el) {
+        var current = el.nextSibling
+
+        while (current && current.nodeType === Node.TEXT_NODE) {
+          current = current.nextSibling
+        }
+
+        if (current) {
+          elements.push(current)
+        }
+      })
+
+      return $(elements)
+    },
+
+    prev: function () {},
+
+    parent: function () {}
   })
 
   $ = $.extend($, {
@@ -119,21 +130,15 @@ module.exports = (function () {
     },
 
     isArrayLike: function (obj) {
-      if (!('length' in obj) && (typeof obj.length === 'number')) {
+      if (!('length' in obj) && (typeof obj.length !== 'number')) {
         return false
       }
 
-      if (typeof obj.length === 'number') {
-        if (obj.length === 0) {
-          return true
-        } else {
-          return (obj.length - 1) in obj
-        }
+      if (obj.length === 0) {
+        return true
       } else {
-        return false
+        return (obj.length - 1) in obj
       }
-
-      return (obj.length - 1) in obj
     },
 
     each: function (collection, callback) {
@@ -154,6 +159,10 @@ module.exports = (function () {
     },
 
     makeArray: function (collection) {
+      if (!collection) {
+        return []
+      }
+
       if ($.isArray(collection)) {
         return collection
       } else if ($.isArrayLike(collection)) {
@@ -163,7 +172,7 @@ module.exports = (function () {
         })
         return arr
       } else {
-        throw 'not an array-like'
+        return [collection]
       }
     },
 
@@ -180,5 +189,21 @@ module.exports = (function () {
   })
 
   return $
+
+  function getText (elem) {
+    if (elem.nodeType === Node.ELEMENT_NODE) {
+      var txt = []
+      $.each(elem.childNodes, function (i, subElement) {
+        txt.push(getText(subElement))
+      })
+      return txt.join('')
+
+    } else if (elem.nodeType === Node.TEXT_NODE) {
+      return elem.textContent
+    }
+  }
+
+  function makeTraverser (fn) {
+  }
 
 })()
