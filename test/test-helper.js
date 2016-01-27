@@ -1,9 +1,12 @@
 'use strict'
 
 var jsdom = require('jsdom')
+var fs = require('fs')
+var util = require('util')
+var html = fs.readFileSync('./test/test.html', 'utf-8')
 
 // setup the simplest document possible
-var doc = jsdom.jsdom('<!doctype html><html><body></body></html>')
+var doc = jsdom.jsdom(html)
 
 // get the window object out of the document
 var win = doc.defaultView
@@ -25,4 +28,15 @@ function propagateToGlobal (window) {
 
     global[key] = window[key]
   }
+}
+
+exports.setDocument = function (html) {
+  var baseHtml = '<!doctype html><html><body>%s</body></html>'
+  var formattedHtml = util.format(baseHtml, html)
+  // console.log('1######', formattedHtml)
+  global.document = jsdom.jsdom(formattedHtml)
+}
+
+exports.resetDocument = function () {
+  global.document = doc
 }
