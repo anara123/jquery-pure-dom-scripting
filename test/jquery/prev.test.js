@@ -7,7 +7,7 @@ var eql = assert.deepEqual
 var helper = require('../test-helper.js')
 var $ = require('../../src/jquery.js')
 
-describe('jquery#next', function () {
+describe('jquery#prev', function () {
   before(function () {
     var html = [
       '<div id="doberman">Doberman Dog</div>',
@@ -25,29 +25,29 @@ describe('jquery#next', function () {
   describe('call next once', function () {
     it('should return div#beagles', function () {
       equal(
-        $('#doberman').next()[0].id,
+        $('#boxer').prev()[0].id,
         'beagles')
     })
 
     it('should be instanceof jquery', function () {
       equal(
-        $('#doberman').next() instanceof $,
+        $('#boxer').prev() instanceof $,
         true)
     })
   })
 
-  describe('call next twice', function () {
-    it('should return div#boxer', function () {
+  describe('call prev twice', function () {
+    it('should return div#doberman', function () {
       equal(
-        $('#doberman').next().next()[0].id,
-        'boxer')
+        $('#boxer').prev().prev()[0].id,
+        'doberman')
     })
   })
 
-  describe('3 elements - call next 3 times', function () {
+  describe('3 elements - call prev 3 times', function () {
     it('should return empty jquery element', function () {
       eql(
-        $('#doberman').next().next().next(),
+        $('#boxer').prev().prev().prev(),
         $([]))
     })
   })

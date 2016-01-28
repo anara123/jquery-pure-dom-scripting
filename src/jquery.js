@@ -102,26 +102,48 @@ module.exports = (function () {
     },
 
     next: function () {
+      return makeTraverser.call(this,
+        function (i, el) {
+          var current = el.nextSibling
+
+          while (current && current.nodeType === Node.TEXT_NODE) {
+            current = current.nextSibling
+          }
+
+          if (current) {
+            return current
+          }
+        })
+    },
+
+    prev: function () {
+      return makeTraverser.call(this,
+        function (i, el) {
+          var current = el.previousSibling
+
+          while (current && current.nodeType === Node.TEXT_NODE) {
+            current = current.previousSibling
+          }
+
+          if (current) {
+            return current
+          }
+        })
+    },
+
+    parent: function () {
       var elements = []
 
       $.each(this, function (i, el) {
-        var current = el.nextSibling
+        var parent = el.parentNode
 
-        while (current && current.nodeType === Node.TEXT_NODE) {
-          current = current.nextSibling
-        }
-
-        if (current) {
-          elements.push(current)
+        if (!$.contains(elements, parent)) {
+          elements.push(parent)
         }
       })
 
       return $(elements)
-    },
-
-    prev: function () {},
-
-    parent: function () {}
+    }
   })
 
   $ = $.extend($, {
@@ -156,6 +178,17 @@ module.exports = (function () {
       }
 
       return collection
+    },
+
+    contains: function (collection, item) {
+      for (var i = 0; i < collection.length; i += 1) {
+        var elem = collection[i]
+        if (item === elem) {
+          return true
+        }
+      }
+
+      return false
     },
 
     makeArray: function (collection) {
@@ -204,6 +237,16 @@ module.exports = (function () {
   }
 
   function makeTraverser (fn) {
+    var elements = []
+
+    $.each(this, function (i, el) {
+      var result = fn(i, el)
+      if (result) {
+        elements.push(result)
+      }
+    })
+
+    return $(elements)
   }
 
 })()
