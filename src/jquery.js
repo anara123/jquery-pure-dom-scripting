@@ -19,7 +19,7 @@ module.exports = (function () {
         } else if (s.charAt(0) === _REGEX_QUERY_SELECTOR) {
           Array.prototype.push.apply(elements, document.querySelectorAll(s))
         } else {
-          Array.prototype.push.apply(elements, document.getElementsByClassName(s))
+          Array.prototype.push.apply(elements, document.getElementsByTagName(s))
         }
       })
 
@@ -127,9 +127,40 @@ module.exports = (function () {
         }
       }),
 
-    parent: makeTraverser(function () {
-      return this.parentNode
-    })
+    parent: makeTraverser(
+      function () {
+        return this.parentNode
+      }),
+
+    children: makeTraverser(
+      function () {
+        return this.children
+      }),
+
+    attr: function (attrName, value) {
+      if (arguments.length > 1) {
+        $.each(this, function (i, el) {
+          el.setAttribute(attrName, value)
+        })
+      } else if (arguments.length === 1) {
+        return this[0] && this[0].getAttribute(attrName)
+      }
+    },
+
+    css: function (styleName, value) {
+      if (arguments.length > 1) {
+        $.each(this, function (i, el) {
+          el.style[styleName] = value
+        })
+
+        return this
+      } else if (arguments.length === 1) {
+        return this[0] && document.defaultView
+          .getComputedStyle(this[0])
+          .getPropertyValue(styleName)
+
+      }
+    }
   })
 
   $ = $.extend($, {

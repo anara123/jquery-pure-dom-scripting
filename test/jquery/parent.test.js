@@ -33,20 +33,20 @@ describe('jquery#parent', function () {
   describe('call parent once', function () {
     it('should return parent element [div#doberman]', function () {
       equal(
-        $('p-class-2').parent()[0].id,
+        $('.p-class-2').parent()[0].id,
         'beagles')
     })
 
     it('should be instanceof jquery', function () {
       equal(
-        $('p-class-2').parent() instanceof $,
+        $('.p-class-2').parent() instanceof $,
         true)
 
     })
 
     it('should have length of 1', function () {
       equal(
-        $('p-class-2').parent().length,
+        $('.p-class-2').parent().length,
         1)
     })
   })
@@ -54,14 +54,14 @@ describe('jquery#parent', function () {
   describe('when call parent twice', function () {
     it('should return grandparent element [div#dogs]', function () {
       equal(
-        $('p-class-2').parent().parent()[0].id,
+        $('.p-class-2').parent().parent()[0].id,
         'dogs')
     })
   })
 
   describe('when elements have multiple parents', function () {
     it('should return multiple elements [div#doberman div#beagles]', function () {
-      var parents = $('p-class-1').parent()
+      var parents = $('.p-class-1').parent()
 
       equal(
         parents[0].id,
