@@ -101,49 +101,35 @@ module.exports = (function () {
       return $(collection)
     },
 
-    next: function () {
-      return makeTraverser.call(this,
-        function (i, el) {
-          var current = el.nextSibling
+    next: makeTraverser(
+      function () {
+        var current = this.nextSibling
 
-          while (current && current.nodeType === Node.TEXT_NODE) {
-            current = current.nextSibling
-          }
-
-          if (current) {
-            return current
-          }
-        })
-    },
-
-    prev: function () {
-      return makeTraverser.call(this,
-        function (i, el) {
-          var current = el.previousSibling
-
-          while (current && current.nodeType === Node.TEXT_NODE) {
-            current = current.previousSibling
-          }
-
-          if (current) {
-            return current
-          }
-        })
-    },
-
-    parent: function () {
-      var elements = []
-
-      $.each(this, function (i, el) {
-        var parent = el.parentNode
-
-        if (!$.contains(elements, parent)) {
-          elements.push(parent)
+        while (current && current.nodeType === Node.TEXT_NODE) {
+          current = current.nextSibling
         }
-      })
 
-      return $(elements)
-    }
+        if (current) {
+          return current
+        }
+      }),
+
+    prev: makeTraverser(
+      function () {
+        var current = this.previousSibling
+
+        while (current && current.nodeType === Node.TEXT_NODE) {
+          current = current.previousSibling
+        }
+
+        if (current) {
+          return current
+        }
+      }),
+
+    parent: makeTraverser(function () {
+      return this.parentNode
+    })
   })
 
   $ = $.extend($, {
@@ -237,16 +223,19 @@ module.exports = (function () {
   }
 
   function makeTraverser (fn) {
-    var elements = []
+    return function () {
+      var elements = []
+      var args = arguments
 
-    $.each(this, function (i, el) {
-      var result = fn(i, el)
-      if (result) {
-        elements.push(result)
-      }
-    })
+      $.each(this, function (i, el) {
+        var result = fn.apply(el, args)
+        if (result && !$.contains(elements, result)) {
+          elements.push(result)
+        }
+      })
 
-    return $(elements)
+      return $(elements)
+    }
   }
 
 })()
